@@ -61,17 +61,11 @@ public:
 
 	//Subtraktion Operator
 	Vector operator-(const Vector& b) {
-		Vector subtraktion = new Vector(b.m_capacity);
+		Vector<T, S> subtraktion;
 		
-		if (this.m_capacity == b.m_capacity) {
-			for (size_t i = 0; i < this.m_capacity; i++) {
-				subtraktion.m_array[i] = this.m_array[i] - b.m_array[i];
+		for (size_t i = 0; i < this->m_capacity; i++) {
+			subtraktion.m_array[i] = this->m_array[i] - b.m_array[i];
 			}
-		}
-		else
-		{
-			throw "Die Vektoren haben unterschiedliche Dimensionen!";
-		}
 		return subtraktion;
 	}
 
@@ -79,9 +73,9 @@ public:
 	Vector operator* (const Vector& b) {
 		Vector produkt = new Vector(b.m_capacity);
 
-		if (this.m_capacity == b.m_capacity) {
-			for (size_t i = 0; i < this.m_capacity; i++) {
-				produkt.m_array[i] = this.m_array[i] * b.m_array[i];
+		if (this->m_capacity == b.m_capacity) {
+			for (size_t i = 0; i < this->m_capacity; i++) {
+				produkt.m_array[i] = this->m_array[i] * b.m_array[i];
 			}
 		}
 		else
@@ -95,10 +89,10 @@ public:
 	Vector operator/(const Vector& b) {
 		Vector division = new Vector(b.m_capacity);
 
-		if (this.m_capacity == b.m_capacity) {
-			for (size_t i = 0; i < this.m_capacity; i++) {
+		if (this->m_capacity == b.m_capacity) {
+			for (size_t i = 0; i < this->m_capacity; i++) {
 				if(b.m_array[i] != 0){
-					division.m_array[i] = this.m_array[i] * b.m_array[i];
+					division.m_array[i] = this->m_array[i] * b.m_array[i];
 				}
 				else{
 					throw "Division nicht möglich, da man nicht durch 0 teilen kann";
@@ -122,11 +116,11 @@ public:
 	Vector SkalarAddition(T skalar) {
 		
 		//abfragen nach dem Typ des Arrays
-		auto ArrayType = remove_all_extents<decltype(this.m_array)>::type;
+		auto ArrayType = remove_all_extents<decltype(this->m_array)>::type;
 
 
-		for (size_t i = 0; i < this.m_capacity; i++) {
-			this.m_array[i] = this.m_array[i] + skalar;
+		for (size_t i = 0; i < this->m_capacity; i++) {
+			this->m_array[i] = this->m_array[i] + skalar;
 		}
 		return this;
 	}
@@ -135,11 +129,11 @@ public:
 	Vector SkalarSubtraktionLinks(T skalar) {
 
 		//abfragen nach dem Typ des Arrays
-		auto ArrayType = remove_all_extents<decltype(this.m_array)>::type;
+		auto ArrayType = remove_all_extents<decltype(this->m_array)>::type;
 
 
-		for (size_t i = 0; i < this.m_capacity; i++) {
-			this.m_array[i] = this.m_array[i] - skalar;
+		for (size_t i = 0; i < this->m_capacity; i++) {
+			this->m_array[i] = this->m_array[i] - skalar;
 		}
 		return this;
 	}
@@ -148,11 +142,11 @@ public:
 	Vector SkalarSubtraktionRechts(T skalar) {
 
 		//abfragen nach dem Typ des Arrays
-		auto ArrayType = remove_all_extents<decltype(this.m_array)>::type;
+		auto ArrayType = remove_all_extents<decltype(this->m_array)>::type;
 
 
-		for (size_t i = 0; i < this.m_capacity; i++) {
-			this.m_array[i] = skalar - this.m_array[i];
+		for (size_t i = 0; i < this->m_capacity; i++) {
+			this->m_array[i] = skalar - this->m_array[i];
 		}
 		return this;
 	}
@@ -161,11 +155,11 @@ public:
 	Vector SkalarMultiplikation(T skalar) {
 
 		//abfragen nach dem Typ des Arrays
-		auto ArrayType = remove_all_extents<decltype(this.m_array)>::type;
+		auto ArrayType = remove_all_extents<decltype(this->m_array)>::type;
 
 
-		for (size_t i = 0; i < this.m_capacity; i++) {
-			this.m_array[i] = this.m_array[i] * skalar;
+		for (size_t i = 0; i < this->m_capacity; i++) {
+			this->m_array[i] = this->m_array[i] * skalar;
 		}
 		return this;
 	}
@@ -174,11 +168,11 @@ public:
 	Vector SkalarDivisionRechts(T skalar) {
 
 		//abfragen nach dem Typ des Arrays
-		auto ArrayType = remove_all_extents<decltype(this.m_array)>::type;
+		auto ArrayType = remove_all_extents<decltype(this->m_array)>::type;
 
 		if(skalar != 0){
-			for (size_t i = 0; i < this.m_capacity; i++) {
-				this.m_array[i] = this.m_array[i] / skalar;
+			for (size_t i = 0; i < this->m_capacity; i++) {
+				this->m_array[i] = this->m_array[i] / skalar;
 			}
 		}
 		return this;
@@ -188,11 +182,11 @@ public:
 	Vector SkalarDivisonLinks(T skalar) {
 
 		//abfragen nach dem Typ des Arrays
-		auto ArrayType = remove_all_extents<decltype(this.m_array)>::type;
+		auto ArrayType = remove_all_extents<decltype(this->m_array)>::type;
 
 
-		for (size_t i = 0; i < this.m_capacity; i++) {
-			if(this.m_array[i] != 0) this.m_array[i] = skalar / this.m_array[i];
+		for (size_t i = 0; i < this->m_capacity; i++) {
+			if(this->m_array[i] != 0) this->m_array[i] = skalar / this->m_array[i];
 		}
 		return this;
 	}
@@ -201,8 +195,8 @@ public:
 	T Skalarprodukt(const Vector& b) {
 		T skalarprodukt = new Vector(b.m_capacity);
 
-		for (size_t i = 0; i < this.m_capacity; i++) {
-			skalarprodukt.m_array[i] = this.m_array[i] * b.m_array[i];
+		for (size_t i = 0; i < this->m_capacity; i++) {
+			skalarprodukt.m_array[i] = this->m_array[i] * b.m_array[i];
 		}
 		return skalarprodukt;
 	}
