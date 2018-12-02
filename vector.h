@@ -71,37 +71,25 @@ public:
 
 	//Multiplikation Operator
 	Vector operator* (const Vector& b) {
-		Vector produkt = new Vector(b.m_capacity);
+		Vector<T, S> produkt;
 
-		if (this->m_capacity == b.m_capacity) {
-			for (size_t i = 0; i < this->m_capacity; i++) {
-				produkt.m_array[i] = this->m_array[i] * b.m_array[i];
-			}
-		}
-		else
-		{
-			throw "Die Vektoren haben unterschiedliche Dimensionen!";
+		for (size_t i = 0; i < this->m_capacity; i++) {
+			produkt.m_array[i] = this->m_array[i] * b.m_array[i];
 		}
 		return produkt;
 	}
 
 	//Divison Operator
 	Vector operator/(const Vector& b) {
-		Vector division = new Vector(b.m_capacity);
+		Vector<T,S> division;
 
-		if (this->m_capacity == b.m_capacity) {
-			for (size_t i = 0; i < this->m_capacity; i++) {
-				if(b.m_array[i] != 0){
-					division.m_array[i] = this->m_array[i] * b.m_array[i];
-				}
-				else{
-					throw "Division nicht möglich, da man nicht durch 0 teilen kann";
-				}
+		for (size_t i = 0; i < this->m_capacity; i++) {
+			if(b.m_array[i] != 0){
+				division.m_array[i] = this->m_array[i] / b.m_array[i];
 			}
-		}
-		else
-		{
-			throw "Die Vektoren haben unterschiedliche Dimensionen!";
+			else{
+				throw "Division nicht möglich, da man nicht durch 0 teilen kann";
+			}
 		}
 		return division;
 	}
@@ -110,6 +98,17 @@ public:
 	const T& operator[] (size_t i) const {
 		if (i >= m_capacity) throw out_of_range("index is too large");
 		return m_array[i];
+	}
+
+	//Vergleichsoperator 
+	bool operator==(const Vector& b) {
+		bool checker = true;
+		for (size_t i = 0; i < this->m_capacity; i++) {
+			if (!(this->m_array[i] == b.m_array[i])) {
+				checker = false;				
+			}
+		}
+		return checker;
 	}
 
 	//Addition mit Skalar
