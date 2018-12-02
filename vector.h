@@ -6,72 +6,65 @@
 
 using namespace std;
 
-template<class T> class Vector {
+template<class T, size_t S> class Vector {
 
 	unique_ptr<T[]> m_array;
 
-	size_t m_capacity; //die Länge des Arrays m_array
-	size_t m_size; //die Anzahl Elemente im Array m_array
+	size_t m_capacity = S; //die Länge des Arrays m_array
+	
 
 public:
 
-	Vector(size_t capacity = 10)
-		: m_array(new T[capacity]), m_capacity(capacity), m_size(0) {};
+	Vector(): m_array(new T[S]) {};
 
 	//Konstruktor mit Vektor als Parameter
 	Vector(const Vector& v)
-		: m_array(new T[v.m_capacity]), m_capacity(v.m_capacity), m_size(v.m_size) {
-		for (size_t i = 0; i < m_size; i++) {
+		: m_array(new T[v.m_capacity]), m_capacity(v.m_capacity){
+		for (size_t i = 0; i < m_capacity; i++) {
 			m_array[i] = v[i];
 		}
 	}
 
 	//TODO
-	Vector(Vector&& v) : m_array(move(v.m_array)), m_capacity(v.m_capacity), m_size(v.m_size) {
-		v.m_size = v.m_capacity = 0;
+	Vector(Vector&& v) : m_array(move(v.m_array)) {
 	}
 
 	//Konstruktor mit Dimensionsgrösse und jeder Dimensionswert denselben Wert
-	Vector(size_t size, const T& val)
-		: m_array(new T[size]), m_capacity(size), m_size(size) {
-		for (size_t i = 0; i < m_size; i++) m_array[i] = val;
+	Vector(const T& val)
+		: m_array(new T[S]){
+		for (size_t i = 0; i < m_capacity; i++) m_array[i] = val;
 	}
 
 
 
 	//Konstruktur mit Iniitialisierungsliste (Dimensionswerte)
-	Vector(const initializer_list<T>& data): m_array(new T[data.size()]), m_capacity(data.size()), m_size(data.size()){
+	Vector(const initializer_list<T>& data): m_array(new T[S]){
+		//if (data.size() > S) { throw "Die Liste ist länger als die Länge des Vektors"; }
+		size_t s = __min(data.size(), S);
 				
 		auto it = data.begin();
-		for (size_t i = 0; i < m_capacity; i++) {
-			m_array[i] = *it;
-			it++;
+		for (size_t i = 0; i < s; i++) {
+			this->m_array[i] = *it++;
 		}
 	}
 	
 	//Addition Operator
 	Vector operator+(const Vector& b) {
-		Vector sum = new Vector(b.m_size);
-		if (this.m_size == b.m_size) {
-			for (size_t i = 0; i < this.m_size; i++) {
-				sum.m_array[i] = this.m_array[i] + b.m_array[i];
+		Vector<T, S> sum;
+		
+		for (size_t i = 0; i < this->m_capacity; i++) {
+			sum.m_array[i] = this->m_array[i] + b.m_array[i];
 			}
-		}
-		else
-		{
-			throw "Die Vektoren haben unterschiedliche Dimensionen!";
-		}
-
 		return sum;
 	}
 
 
 	//Subtraktion Operator
 	Vector operator-(const Vector& b) {
-		Vector subtraktion = new Vector(b.m_size);
+		Vector subtraktion = new Vector(b.m_capacity);
 		
-		if (this.m_size == b.m_size) {
-			for (size_t i = 0; i < this.m_size; i++) {
+		if (this.m_capacity == b.m_capacity) {
+			for (size_t i = 0; i < this.m_capacity; i++) {
 				subtraktion.m_array[i] = this.m_array[i] - b.m_array[i];
 			}
 		}
@@ -84,10 +77,10 @@ public:
 
 	//Multiplikation Operator
 	Vector operator* (const Vector& b) {
-		Vector produkt = new Vector(b.m_size);
+		Vector produkt = new Vector(b.m_capacity);
 
-		if (this.m_size == b.m_size) {
-			for (size_t i = 0; i < this.m_size; i++) {
+		if (this.m_capacity == b.m_capacity) {
+			for (size_t i = 0; i < this.m_capacity; i++) {
 				produkt.m_array[i] = this.m_array[i] * b.m_array[i];
 			}
 		}
@@ -100,10 +93,10 @@ public:
 
 	//Divison Operator
 	Vector operator/(const Vector& b) {
-		Vector division = new Vector(b.m_size);
+		Vector division = new Vector(b.m_capacity);
 
-		if (this.m_size == b.m_size) {
-			for (size_t i = 0; i < this.m_size; i++) {
+		if (this.m_capacity == b.m_capacity) {
+			for (size_t i = 0; i < this.m_capacity; i++) {
 				if(b.m_array[i] != 0){
 					division.m_array[i] = this.m_array[i] * b.m_array[i];
 				}
@@ -121,7 +114,7 @@ public:
 
 	//Index Operator (nur Lesezugriff)
 	const T& operator[] (size_t i) const {
-		if (i >= m_size) throw out_of_range("index is too large");
+		if (i >= m_capacity) throw out_of_range("index is too large");
 		return m_array[i];
 	}
 
@@ -132,7 +125,7 @@ public:
 		auto ArrayType = remove_all_extents<decltype(this.m_array)>::type;
 
 
-		for (size_t i = 0; i < this.m_size; i++) {
+		for (size_t i = 0; i < this.m_capacity; i++) {
 			this.m_array[i] = this.m_array[i] + skalar;
 		}
 		return this;
@@ -145,7 +138,7 @@ public:
 		auto ArrayType = remove_all_extents<decltype(this.m_array)>::type;
 
 
-		for (size_t i = 0; i < this.m_size; i++) {
+		for (size_t i = 0; i < this.m_capacity; i++) {
 			this.m_array[i] = this.m_array[i] - skalar;
 		}
 		return this;
@@ -158,7 +151,7 @@ public:
 		auto ArrayType = remove_all_extents<decltype(this.m_array)>::type;
 
 
-		for (size_t i = 0; i < this.m_size; i++) {
+		for (size_t i = 0; i < this.m_capacity; i++) {
 			this.m_array[i] = skalar - this.m_array[i];
 		}
 		return this;
@@ -171,7 +164,7 @@ public:
 		auto ArrayType = remove_all_extents<decltype(this.m_array)>::type;
 
 
-		for (size_t i = 0; i < this.m_size; i++) {
+		for (size_t i = 0; i < this.m_capacity; i++) {
 			this.m_array[i] = this.m_array[i] * skalar;
 		}
 		return this;
@@ -184,7 +177,7 @@ public:
 		auto ArrayType = remove_all_extents<decltype(this.m_array)>::type;
 
 		if(skalar != 0){
-			for (size_t i = 0; i < this.m_size; i++) {
+			for (size_t i = 0; i < this.m_capacity; i++) {
 				this.m_array[i] = this.m_array[i] / skalar;
 			}
 		}
@@ -198,7 +191,7 @@ public:
 		auto ArrayType = remove_all_extents<decltype(this.m_array)>::type;
 
 
-		for (size_t i = 0; i < this.m_size; i++) {
+		for (size_t i = 0; i < this.m_capacity; i++) {
 			if(this.m_array[i] != 0) this.m_array[i] = skalar / this.m_array[i];
 		}
 		return this;
@@ -206,9 +199,9 @@ public:
 	
 	//Skalarprodukt zweier Vektoren
 	T Skalarprodukt(const Vector& b) {
-		T skalarprodukt = new Vector(b.m_size);
+		T skalarprodukt = new Vector(b.m_capacity);
 
-		for (size_t i = 0; i < this.m_size; i++) {
+		for (size_t i = 0; i < this.m_capacity; i++) {
 			skalarprodukt.m_array[i] = this.m_array[i] * b.m_array[i];
 		}
 		return skalarprodukt;
@@ -216,8 +209,8 @@ public:
 
 	friend ostream& operator<<(ostream& os, const Vector& v) {
 		os << '[';
-		if (v.m_size > 0) os << v[0];
-		for (size_t i = 1; i < v.m_size; i++) {
+		if (v.m_capacity > 0) os << v[0];
+		for (size_t i = 1; i < v.m_capacity; i++) {
 			os << ',' << v[i];
 		}
 

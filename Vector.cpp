@@ -6,14 +6,13 @@ using namespace std;
 
 int main() {
 
-	Vector<double> v1(5, 1.9);
+	Vector<int, 3> v1({ 2,3,4});
 	cout << v1 << endl;
-
-	Vector<int> v2{ 4,3,2,1,2 };
-	Vector<int> v3{ 4,3,2,1,2 };
-	cout << v2 << endl;
+	Vector<int, 3> v2({ 2,3,4});
 	
-	cout << v2*v3 << endl;
+	cout << v1 + v2 << endl;
+
+
 
 	
 
