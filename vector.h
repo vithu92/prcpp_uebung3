@@ -50,6 +50,7 @@ public:
 	
 	//Addition Operator
 	Vector operator+(const Vector& b) {
+		
 		Vector<T, S> sum;
 		
 		for (size_t i = 0; i < this->m_capacity; i++) {
@@ -111,84 +112,97 @@ public:
 		return checker;
 	}
 
-	//Addition mit Skalar
-	Vector SkalarAddition(T skalar) {
-		
-		//abfragen nach dem Typ des Arrays
-		auto ArrayType = remove_all_extents<decltype(this->m_array)>::type;
-
+	//Addition Vektor + Skalar
+	Vector operator+(T skalar) {
+		Vector<T, S> sum;
 
 		for (size_t i = 0; i < this->m_capacity; i++) {
-			this->m_array[i] = this->m_array[i] + skalar;
+			sum.m_array[i] = this->m_array[i] + skalar;
 		}
-		return this;
+		return sum;
 	}
 
-	//Subtraktion mit Skalar als Subtrahend
-	Vector SkalarSubtraktionLinks(T skalar) {
+	//Addition Skalar + Vektor
+	friend Vector operator+(const T &skalar, const Vector& b) {
+		Vector<T, S> sum;
 
-		//abfragen nach dem Typ des Arrays
-		auto ArrayType = remove_all_extents<decltype(this->m_array)>::type;
+		for (size_t i = 0; i < b.m_capacity; i++) {
+			sum.m_array[i] = b.m_array[i] + skalar;
+		}
+		return sum;
+	}
 
+	//Subktration Vektor - Skalar
+	Vector operator-(T skalar) {
+		Vector<T, S> subtration;
 
 		for (size_t i = 0; i < this->m_capacity; i++) {
-			this->m_array[i] = this->m_array[i] - skalar;
+			subtration.m_array[i] = this->m_array[i] - skalar;
 		}
-		return this;
+		return subtration;
 	}
 
-	//Subtraktion mit Skalar als Minuend
-	Vector SkalarSubtraktionRechts(T skalar) {
+	//Subktration Skalar - Vektor
+	friend Vector operator-(const T &skalar, const Vector& b) {
+		Vector<T, S> subtration;
 
-		//abfragen nach dem Typ des Arrays
-		auto ArrayType = remove_all_extents<decltype(this->m_array)>::type;
+		for (size_t i = 0; i < b.m_capacity; i++) {
+			subtration.m_array[i] = skalar - b.m_array[i];
+		}
+		return subtration;
+	}
 
+	//Multiplikation Vektor * Skalar
+	Vector operator*(T skalar) {
+		Vector<T, S> produkt;
 
 		for (size_t i = 0; i < this->m_capacity; i++) {
-			this->m_array[i] = skalar - this->m_array[i];
+			produkt.m_array[i] = this->m_array[i] * skalar;
 		}
-		return this;
+		return produkt;
 	}
 
-	//Multiplikation mit Skalar
-	Vector SkalarMultiplikation(T skalar) {
+	//Multiplikation Skalar * Vektor
+	friend Vector operator*(const T &skalar, const Vector& b) {
+		Vector<T, S> produkt;
 
-		//abfragen nach dem Typ des Arrays
-		auto ArrayType = remove_all_extents<decltype(this->m_array)>::type;
+		for (size_t i = 0; i < b.m_capacity; i++) {
+			produkt.m_array[i] = skalar * b.m_array[i];
+		}
+		return produkt;
+	}
 
+	//Division Vektor / Skalar
+	Vector operator/(T skalar) {
+		Vector<T, S> division;
 
 		for (size_t i = 0; i < this->m_capacity; i++) {
-			this->m_array[i] = this->m_array[i] * skalar;
+			division.m_array[i] = this->m_array[i] / skalar;
 		}
-		return this;
+		return division;
 	}
 
-	//Division mit Skalar als Divisor
-	Vector SkalarDivisionRechts(T skalar) {
+	//Division Skalar / Vektor
+	friend Vector operator/(const T &skalar, const Vector& b) {
+		Vector<T, S> division;
 
-		//abfragen nach dem Typ des Arrays
-		auto ArrayType = remove_all_extents<decltype(this->m_array)>::type;
-
-		if(skalar != 0){
-			for (size_t i = 0; i < this->m_capacity; i++) {
-				this->m_array[i] = this->m_array[i] / skalar;
-			}
+		for (size_t i = 0; i < b.m_capacity; i++) {
+			division.m_array[i] = skalar / b.m_array[i];
 		}
-		return this;
+		return division;
 	}
 
-	//Divison mit Skalar als Dividend
-	Vector SkalarDivisonLinks(T skalar) {
-
-		//abfragen nach dem Typ des Arrays
-		auto ArrayType = remove_all_extents<decltype(this->m_array)>::type;
 
 
-		for (size_t i = 0; i < this->m_capacity; i++) {
-			if(this->m_array[i] != 0) this->m_array[i] = skalar / this->m_array[i];
-		}
-		return this;
-	}
+
+
+
+
+
+
+
+
+
 	
 	//Skalarprodukt zweier Vektoren
 	T Skalarprodukt(const Vector& b) {

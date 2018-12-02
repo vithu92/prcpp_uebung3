@@ -6,9 +6,9 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
 #define AUFGABE1
-#define AUFGABE2
-#define AUFGABE3
-#define AUFGABE3_1
+//#define AUFGABE2
+//#define AUFGABE3
+//#define AUFGABE3_1
 
 namespace UnitTest1 {
 	TEST_CLASS(Expression) {

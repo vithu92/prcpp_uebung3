@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Expression.h" />
     <ClInclude Include="vector.h" />
   </ItemGroup>
   <ItemGroup>
