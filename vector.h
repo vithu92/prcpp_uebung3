@@ -96,11 +96,19 @@ public:
 	}
 
 	//Index Operator (nur Lesezugriff)
-	const T& operator[] (size_t i) const {
+	T& operator[] (size_t i) const {
 		if (i >= m_capacity) throw out_of_range("index is too large");
 		return m_array[i];
 	}
 
+	// Operator =
+	void operator= (const Vector b) {
+		if(this->m_capacity == b.m_capacity){
+			for (size_t i = 0; i < this->m_capacity; i++) {
+				this->m_array[i] = b.m_array[i];
+			}
+		}
+	}
 	//Vergleichsoperator 
 	bool operator==(const Vector& b) {
 		bool checker = true;
@@ -193,27 +201,6 @@ public:
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-	
-	//Skalarprodukt zweier Vektoren
-	T Skalarprodukt(const Vector& b) {
-		T skalarprodukt = new Vector(b.m_capacity);
-
-		for (size_t i = 0; i < this->m_capacity; i++) {
-			skalarprodukt.m_array[i] = this->m_array[i] * b.m_array[i];
-		}
-		return skalarprodukt;
-	}
-
 	friend ostream& operator<<(ostream& os, const Vector& v) {
 		os << '[';
 		if (v.m_capacity > 0) os << v[0];
@@ -224,5 +211,15 @@ public:
 		return os << ']';
 	}
 
+	//Skalarprodukt
+	/*template<typename skalarproduct>
+	skalarproduct operator**(const Vector& a, const Vector& b) {
+		T sum = 0;
+
+		for (size_t i = 0; i < a.m_capacity; i++) {
+			sum += a.m_array[i] * b.m_array[i];
+		}
+		return sum;
+	}*/
 	
 };
