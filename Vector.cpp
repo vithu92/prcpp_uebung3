@@ -4,6 +4,7 @@
 
 using namespace std;
 
+/*This main methde was only for testing purpose*/
 int main() {
 
 	Vector<double, 5> A({ 1, 2, 3, 4, 5 });

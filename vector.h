@@ -8,16 +8,12 @@
 using namespace std;
 
 template<class T, int S>
-
 class Vector : public array<T, S> {
-
 
 public:
 
 	Vector(const initializer_list<T>& data) {
-
 		size_t s = __min(data.size(), S);
-
 		auto it = data.begin();
 
 		for (size_t i = 0; i < s; i++) {
@@ -25,19 +21,19 @@ public:
 		}
 	}
 
-
 	Vector() {}
 
+	// Zuweisungsoperator
 	template<typename AnyType>
 	Vector<T, S> operator=(const AnyType e) {
-
-		for (int i = 0; i < S; i++) this->at(i) = e[i];
+		for (int i = 0; i < S; i++) {
+			this->at(i) = e[i];
+		}
 
 		return *this;
-
 	}
 
-
+	// ostream Konsole Funktion, sodass Vektoren richtig angezeigt werden
 	friend std::ostream& operator<<(std::ostream &os, const Vector& v) {
 
 		os << "[";
@@ -49,11 +45,11 @@ public:
 
 	}
 
-
+	// Vergleichsoperator
 	template<typename AnyType>
-	bool operator==(AnyType& arg) {
-		for (int i = 0; i < arg.size(); i++) {
-			if (this->at(i) != arg[i]) {
+	bool operator==(AnyType& e) {
+		for (int i = 0; i < e.size(); i++) {
+			if (this->at(i) != e[i]) {
 				return false;
 			}
 		}
@@ -61,7 +57,8 @@ public:
 	}
 
 
-	
+	// Skalarprodukt und die Implementierung über die Methode operator*
+	// TODO
 	struct ScalarStruct
 	{
 	public:
